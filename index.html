@@ -125,6 +125,13 @@
     <button onclick="clearStats()">Clear stats</button>
     <button onclick="downloadTrialsCSV()">Download Trials CSV</button>
     <button onclick="downloadAggregateCSV()">Download Per‑Number CSV</button>
+<div style="margin:1rem 0">
+  <button id="nextBtn" style="font-size:1.2rem; padding:0.75rem 1.25rem; width:90%">
+    ▶ Next / Reveal
+  </button>
+</div>
+
+
   </div>
 
   <div id="metaRow">
@@ -673,7 +680,35 @@
     }
     window.addEventListener('resize', resizeAll);
     window.addEventListener('load', resizeAll);
-  </script>
+  
+// Mobile-friendly button for reveal/next
+(function(){
+  const btn = document.getElementById("nextBtn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    if (!running) return;
+    if (!translationShown) {
+      const elapsed = (performance.now() - startTime) / 1000;
+      timerEl.textContent = `${elapsed.toFixed(3)} s`;
+
+      let correct = true;
+      if (reverseMode) {
+        const guess = userInput.value.replace(/[.,\s]/g, '');
+        const actual = currentNumber.toString();
+        correct = (guess === actual);
+        translationEl.style.color = correct ? 'lightgreen' : 'salmon';
+      }
+      recordTrial(elapsed, correct, currentNumber);
+
+      translationEl.style.visibility = "visible";
+      translationShown = true;
+    } else {
+      showNewNumber();
+    }
+  });
+})();
+
+</script>
 
   <!-- Service worker registration -->
   <script>

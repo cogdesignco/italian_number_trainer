@@ -1,4 +1,4 @@
-const CACHE = 'it-number-trainer-v1';
+const CACHE = 'it-number-trainer-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -22,7 +22,5 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then(resp => resp || fetch(e.request))
-  );
+  e.respondWith(caches.match(e.request).then(resp => resp || fetch(e.request)));
 });
